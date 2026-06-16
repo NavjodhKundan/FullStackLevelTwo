@@ -16,9 +16,9 @@ const fullName = `${firstname} ${lastName}`;
 console.log(fullName); // "undefined Rivera"
 
 // What's wrong ↓
-
+// variable name is spelled wrond 
 // Your fix ↓
-
+// we should user firstName as variable name
 
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
@@ -39,9 +39,9 @@ console.log(validateUsername("   "));    // ❌ should be invalid — logs "Vali
 console.log(validateUsername("alexdev")); // ✅ valid
 
 // What's wrong ↓
-
+// the username is not trimed 
 // Your fix ↓
-
+// should use .trim() onm username
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -72,11 +72,14 @@ console.log(validateForm({ username: "alexdev", email: "a@b.com", age: "28" }));
 console.log(validateForm({ username: "alexdev", email: "a@b.com", age: "abc" }));
 // Bug 1: validateAge("abc") — what does parseInt return? Is it >= 13?
 
-console.log(validateForm({ username: "al",      email: "a@b.com", age: "28" }));
+console.log(validateForm({ username: "al", email: "a@b.com", age: "28" }));
 // Bug 2: username "al" has length 2. Is 2 > 3?
 
 // Bug 1 ↓
-
+// we should use interger datatype for age not sting
 // Bug 2 ↓
+// not using .trim() for user name
 
 // Your fix ↓
+// if(!isInteger(ageStr)) return false;
+// const usernameOk = data.username.trim().length > 3;

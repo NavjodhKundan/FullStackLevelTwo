@@ -17,8 +17,9 @@ storeName = "MegaShop";
 console.log(storeName);
 
 // What's wrong ↓
-
+// We are trying to change constant variable, which is not allowed
 // Your fix ↓
+// We can change storeName to let variable
 
 
 // ----------------------------------------------------------
@@ -32,9 +33,9 @@ let orderTotal = item1Price + Item2Price;
 console.log("Total: $" + orderTotal);
 
 // What's wrong ↓
-
+// Wrong variable name used on line 33 for item2Price
 // Your fix ↓
-
+// correct name we should use is item2Price
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -49,7 +50,8 @@ console.log(productName + " — $" + productPrice);
 
 // Hint: the code works, but what keyword should you be using instead?
 // Why is the current keyword considered bad practice?
-
+// harder to maintain as it a function base keyword not block based key word
 // What's wrong ↓
-
+// We should use let or var keyword not var
 // Your fix ↓
+// replace var keyword with let and const

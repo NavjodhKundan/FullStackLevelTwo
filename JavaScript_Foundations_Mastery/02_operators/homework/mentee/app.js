@@ -23,6 +23,16 @@
 //
 // Log: gameName + " — Player: " + playerName
 
+console.log("Task 1");
+const gameName = "Space Blaster"; //we wont be changing the game name in future
+const playerName = "Nav43627"; //player name will not change
+let playerScore = 0; //score will be changing canincrease or decrease
+let highScore = 850; //score can change in future as player can bit its own records
+const pointsPerKill = 25; //player will be 25 ponirs for each kill and will be same for each kill
+let livesRemaining = 3; //will decrese as player will get killed
+
+console.log(gameName + " - Player: " + playerName);
+
 // ----------------------------------------------------------
 // TASK 2 — Earn points
 // ----------------------------------------------------------
@@ -32,6 +42,13 @@
 //
 // Log: "Earned: " + totalEarned + " points"
 // Log: "Score: " + playerScore
+
+console.log("Task 2");
+let totalEarned = 6*pointsPerKill;
+playerScore += totalEarned;
+
+console.log("Earned: " + totalEarned + " points");
+console.log("Score: " + playerScore);
 
 // ----------------------------------------------------------
 // TASK 3 — Take damage
@@ -43,6 +60,12 @@
 // Then log the result of: livesRemaining > 0
 // Write a comment: what does true/false mean in this context?
 
+console.log("Task 3");
+livesRemaining -= 1;
+livesRemaining -= 1;
+console.log("Lives remaining: " + livesRemaining);
+console.log(livesRemaining > 0); //it means value stored in variable is greater that 0
+
 // ----------------------------------------------------------
 // TASK 4 — Level bonus
 // ----------------------------------------------------------
@@ -53,15 +76,26 @@
 // Log: "Bonus: " + levelBonus
 // Log: "Score after bonus: " + playerScore
 
+console.log("Task 4");
+const levelBonus = playerScore*0.5;
+playerScore += levelBonus;
+console.log("Bonus: " + levelBonus);
+console.log("Score after bonus: " + playerScore);
+
 // ----------------------------------------------------------
 // TASK 5 — Check the high score
 // ----------------------------------------------------------
 // Log the result of each comparison. Write your prediction
 // as a comment BEFORE running the code.
 //
-//   playerScore > highScore       → prediction:
-//   playerScore === highScore     → prediction:
-//   playerScore >= highScore      → prediction:
+//   playerScore > highScore       → prediction: flase
+//   playerScore === highScore     → prediction: false
+//   playerScore >= highScore      → prediction: false
+
+console.log("Task 5");
+console.log(playerScore > highScore);
+console.log(playerScore === highScore);
+console.log(playerScore >= highScore);
 
 // ----------------------------------------------------------
 // TASK 6 — Update the high score
@@ -74,6 +108,11 @@
 // Then reassign highScore to playerScore.
 // Log: "New high score: " + highScore
 
+console.log("Task 6");
+console.log(playerScore > highScore);
+//highScore = playerScore;
+console.log("New high score: " + highScore);
+
 // ----------------------------------------------------------
 // TASK 7 — Time remaining (modulus practice)
 // ----------------------------------------------------------
@@ -84,6 +123,12 @@
 //
 // Log: "Time left: " + minutes + " min " + secondsLeft + " sec"
 // ⚠️ minutes will be a decimal — that's expected. We'll fix it in Data Types.
+
+console.log("Task 7");
+const totalSeconds = 245;
+const minutes = totalSeconds/60;
+const leftover = totalSeconds%60;
+console.log("Time left: " + minutes + " min " + leftover + " sec");
 
 // ----------------------------------------------------------
 // TASK 8 — Connect the dots summary
@@ -96,6 +141,15 @@
 //
 // Then log whether the player beat the original highScore (850):
 // endScore > 850
+
+console.log("Task 8");
+const startScore = 0;
+const endScore = playerScore;
+const improvement = endScore - startScore;
+console.log(playerName + " improved by " + improvement + " points this session.");
+console.log("Player beat high score: ");
+console.log(endScore > highScore);
+
 
 // ----------------------------------------------------------
 // ⭐ STRETCH GOAL — Accuracy Rating
@@ -116,3 +170,12 @@
 // Bonus question (write as a comment):
 // accuracyPercent will have many decimal places. What do you think
 // we could use to round it to 2 decimal places? (Hint: coming in Data Types)
+
+console.log("Stretch Gola");
+const shotsFired = 40;
+const shotsHit = 31;
+const accuracyDecimal = shotsHit/shotsFired;
+const accuracyPercent = accuracyDecimal*100;
+console.log(playerName + " accuracy: " + accuracyPercent + "%");
+console.log(accuracyPercent>75);
+//Yes we can round it to 2 decimal places. There will be a function to round the variabe to 2 decimal places

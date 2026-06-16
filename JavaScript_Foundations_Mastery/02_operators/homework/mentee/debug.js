@@ -17,9 +17,9 @@ const tipAmount  = billAmount % tipPercent;
 console.log("Tip: $" + tipAmount);
 
 // What's wrong ↓
-
+// % is used to calculate the result. % will give remainder value not the currect result
 // Your fix ↓
-
+// we can use the formula billAmount*(tipPercent/100)
 
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
@@ -34,9 +34,9 @@ countdown -= 1;
 console.log("Countdown: " + countdown);
 
 // What's wrong ↓
-
+// we are using const to declare the variable which will nor allow us to update the countdown variable
 // Your fix ↓
-
+//change decleration of countdown from const to let
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -51,9 +51,10 @@ var username2 = "Gamer99";
 console.log("Names match: " + (username1 == username2));
 
 // Logic bug ↓
-
+// we are using == operator, it will only comapre address value not the variable value
 // Style issue 1 ↓
-
+// use of const or let keywords insted of var keyword
 // Style issue 2 ↓
-
+// changing variable names to userName1 and userName2
 // Your fix ↓
+// we can use === operator with will compare the variable values along with address

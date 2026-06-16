@@ -56,11 +56,24 @@ const testInputs = {
 // Test with all four username test inputs. Log each result.
 
 function isValidUsername(username) {
-  // your code here
+  if(typeof(username) !== "string"){
+    return {valid: "false", message: "Username should be a string"};
+  } else if (username.length < 3){
+    return {valid: false, message: `UserName must be at least 3 characters (got ${username.length})`}
+  } else if (username.length > 20){
+    return {valid: false, message: `UserName must be at 20 characters or fewer (got ${username.length})`}
+  } else if (username.includes(" ")){
+    return {valid: false, message: "Username cannot contain spaces"};
+  } else {
+    return {valid: true, message: `"${username}" is a valid username`};
+  }
 }
 
 console.log("--- Task 1: Username Validation ---");
-// your code here
+console.log(isValidUsername(testInputs.validUsername));
+console.log(isValidUsername(testInputs.shortUsername));
+console.log(isValidUsername(testInputs.longUsername));
+console.log(isValidUsername(testInputs.spacesUsername));
 
 // ----------------------------------------------------------
 // TASK 2 — isValidEmail
@@ -85,11 +98,25 @@ console.log("--- Task 1: Username Validation ---");
 // Test with validEmail, noAtEmail, noDomainEmail.
 
 function isValidEmail(email) {
-  // your code here
+  const cleanEmail = email.trim().toLowerCase();
+  if(!cleanEmail.includes("@")){
+    return {valid: false, message: `"${cleanEmail}" Invalid email, must contain @`}
+  }  else {
+    let emailSplit = cleanEmail.split("@");
+    if (emailSplit[0] === ""){
+      return {valid: false, message: `"${cleanEmail}" cannot be empty before @`}
+    } else if (emailSplit[1] === ""){
+      return {valid: false, message: `"${cleanEmail}" should contain domain name`}
+    } else {
+      return {valid: true, message: `"${cleanEmail}" is a valid email`}
+    }
+  }
 }
 
 console.log("\n--- Task 2: Email Validation ---");
-// your code here
+console.log(isValidEmail(testInputs.validEmail));
+console.log(isValidEmail(testInputs.noAtEmail));
+console.log(isValidEmail(testInputs.noDomainEmail));
 
 // ----------------------------------------------------------
 // TASK 3 — isValidAge
@@ -110,11 +137,24 @@ console.log("\n--- Task 2: Email Validation ---");
 // Write a comment: why use Number() instead of parseInt() here?
 
 function isValidAge(ageInput) {
-  // your code here
+  const age = Number(ageInput);
+  if(isNaN(age)){
+    return {valid: false, message: `"${age}" not a valid number`};
+  } else if(age < 13){
+    return {valid: false, message: `Age must be at least 13 (got ${age})`};
+  } else if(age > 120){
+    return {valid: false, message: `Age must be 120 or below (got ${age})`};
+  } else {
+    return {valid: true, message: `Valid age: ${age}`};
+  }
 }
 
 console.log("\n--- Task 3: Age Validation ---");
-// your code here
+console.log(isValidAge(testInputs.validAge));
+console.log(isValidAge(testInputs.youngAge));
+console.log(isValidAge(testInputs.textAge));
+console.log(isValidAge(testInputs.negativeAge));
+//Because it only works if string contains only numbers.
 
 // ----------------------------------------------------------
 // TASK 4 — isValidPassword
@@ -147,11 +187,29 @@ console.log("\n--- Task 3: Age Validation ---");
 // Test with all five password test inputs.
 
 function isValidPassword(password) {
-  // your code here
+  const errors = [];
+  const hasUpper = password!==password.toLowerCase();
+  const hasNumber  = /[0-9]/.test(password);
+  const hasSpecial = /[!@#$%^&*?_\-]/.test(password);
+
+  if(password.length<8){errors.push("at least 8 characters long.")}
+  else if (!hasUpper){errors.push("one uppercase letter")}
+  else if (!hasNumber){errors.push("one number")}
+  else if (!hasSpecial){errors.push("one special character")};
+
+  if(errors.length > 0){
+    return {valid: false, message: `Password needs: ${errors.join(", ")}`};
+  } else {
+    return {valid: true, message: "Password meets all requirements"};
+  }
 }
 
 console.log("\n--- Task 4: Password Validation ---");
-// your code here
+console.log(isValidPassword(testInputs.validPassword));
+console.log(isValidPassword(testInputs.shortPassword));
+console.log(isValidPassword(testInputs.noNumberPassword));
+console.log(isValidPassword(testInputs.noUpperPassword));
+console.log(isValidPassword(testInputs.noSpecialPassword));
 
 // ----------------------------------------------------------
 // TASK 5 — formatValidationResult
@@ -166,10 +224,15 @@ console.log("\n--- Task 4: Password Validation ---");
 // Rerun your tests from Tasks 1-4 through this formatter.
 
 function formatValidationResult(fieldName, result) {
-  // your code here
+  return `${result.valid ? "✅" : "❌"} ${fieldName} : ${result.message}`;
 }
 
 console.log("\n--- Task 5: Formatted Results ---");
+
+console.log(formatValidationResult( "Valid Username", isValidUsername(testInputs.validUsername)));
+console.log(formatValidationResult("User Email", isValidEmail(testInputs.noAtEmail)));
+console.log(formatValidationResult("User Age", isValidAge(testInputs.youngAge)));
+console.log(formatValidationResult("User Passeord", isValidPassword(testInputs.validPassword)));
 // Rerun at least 3 tests from each validator through formatValidationResult
 
 // ----------------------------------------------------------
@@ -207,11 +270,37 @@ console.log("\n--- Task 5: Formatted Results ---");
 // log each field result through formatValidationResult.
 
 function validateSignUpForm(formData) {
-  // your code here
+  let results = {
+    username: null,
+    email: null,
+    age: null,
+    password: null
+  };
+
+  results.username = isValidUsername(formData.username);
+  results.email = isValidEmail(formData.email);
+  results.age = isValidAge(formData.age);
+  results.password = isValidPassword(formData.password);
+
+  const formValid = Object.values(results).every(r => r.valid);
+
+  return {valid: formValid, results};
 }
 
 console.log("\n--- Task 6: Full Form Validation ---");
-// your code here
+console.log(validateSignUpForm({
+  username: "alexdev",
+  email:    "alex@devstudio.com",
+  age:      "28",
+  password: "SecurePass1!"
+}));
+
+console.log(validateSignUpForm({
+  username: "al",
+  email:    "not-an-email",
+  age:      "twelve",
+  password: "abc"
+}));
 
 // ----------------------------------------------------------
 // TASK 7 — cleanFormData
@@ -238,11 +327,28 @@ console.log("\n--- Task 6: Full Form Validation ---");
 //   })
 
 function cleanFormData(rawFormData) {
-  // your code here
+  const username = rawFormData.username.trim().toLowerCase();
+  console.log(`Cleaned username: "${rawFormData.username}" -> "${username}"`);
+
+  const email = rawFormData.email.trim().toLowerCase();
+  console.log(`Cleaned email: "${rawFormData.email}" -> "${email}"`);
+
+  const age = rawFormData.age.trim();
+  console.log(`Cleaned age: "${rawFormData.age}" -> "${age}"`);
+
+  const password = rawFormData.password;
+  console.log(`Cleaned password: "${rawFormData.password}" -> "${password}"`);
+
+  return {username: username, email: email, age: age, password: password};
 }
 
 console.log("\n--- Task 7: Cleaning Form Data ---");
-// your code here
+cleanFormData({
+  username: "  AlexDev  ",
+  email:    "  ALEX@DEVSTUDIO.COM  ",
+  age:      "  28  ",
+  password: "SecurePass1!"
+  });
 
 // ----------------------------------------------------------
 // TASK 8 — Connect the dots: full pipeline
@@ -258,7 +364,20 @@ console.log("\n--- Task 7: Cleaning Form Data ---");
 // (Hint: would " ALEX@DEVSTUDIO.COM " pass the email validator?)
 
 console.log("\n--- Task 8: Full Pipeline ---");
-// your code here
+const rawData = {
+  username: "  AlexDev  ",
+  email:    "  ALEX@DEVSTUDIO.COM  ",
+  age:      "  28  ",
+  password: "SecurePass1!"
+};
+const cleaned = cleanFormData(rawData);
+const validating = validateSignUpForm(cleaned);
+console.log(formatValidationResult( "Username", isValidUsername(cleaned.username)));
+console.log(formatValidationResult("Email", isValidEmail(cleaned.email)));
+console.log(formatValidationResult("Age", isValidAge(cleaned.age)));
+console.log(formatValidationResult("Password", isValidPassword(cleaned.password)));
+//because this data will stored in data base and when next time user tries to login, 
+//the system might not be able to match the records.
 
 // ----------------------------------------------------------
 // ⭐ STRETCH GOAL — formatSummary
@@ -282,8 +401,20 @@ console.log("\n--- Task 8: Full Pipeline ---");
 // Write a comment: what does Object.entries() return?
 
 function formatSummary(validationResult) {
-  // your code here
+  if(validationResult.valid){
+    console.log("Overall: ✅ Ready to submit");
+  } else {
+    console.log("Overall: ❌ Form has errors");
+  }
+
+  Object.entries(validationResult.results).forEach(([field,result]) => {console.log(field, result)});
 }
 
 console.log("\n--- Stretch: formatSummary ---");
-// your code here
+formatSummary(validateSignUpForm({
+  username: "AlexDev",
+  email:    "ALEX@DEVSTUDIO.COM",
+  age:      "28",
+  password: "SecurePass1!"
+}));
+//It returns the values that are stored in results object.
