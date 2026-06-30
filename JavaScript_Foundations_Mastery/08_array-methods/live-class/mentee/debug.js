@@ -5,7 +5,6 @@
 // what was wrong as a comment.
 // ============================================================
 
-
 // ----------------------------------------------------------
 // 🟢 DEBUG 1 — Easy
 // ----------------------------------------------------------
@@ -15,7 +14,7 @@
 
 const titles = ["inception", "interstellar", "parasite"];
 
-const uppercased = titles.map(function(title) {
+const uppercased = titles.map(function (title) {
   title.toUpperCase();
 });
 
@@ -26,7 +25,6 @@ console.log("Uppercased:", uppercased);
 
 // Your fix ↓
 
-
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
 // ----------------------------------------------------------
@@ -34,13 +32,13 @@ console.log("Uppercased:", uppercased);
 // but it returns ALL movies instead of just the high-rated ones.
 
 const movies = [
-  { title: "Inception",       rating: 8.8 },
+  { title: "Inception", rating: 8.8 },
   { title: "The Dark Knight", rating: 9.0 },
-  { title: "Morbius",         rating: 5.2 },
-  { title: "Parasite",        rating: 8.5 }
+  { title: "Morbius", rating: 5.2 },
+  { title: "Parasite", rating: 8.5 },
 ];
 
-const highRated = movies.filter(function(movie) {
+const highRated = movies.filter(function (movie) {
   movie.rating >= 8.5;
 });
 
@@ -50,18 +48,17 @@ console.log(highRated);
 
 // Your fix ↓
 
-
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
 // ----------------------------------------------------------
 // This should calculate the total of all prices (expected: 187.97)
 // but it produces a strange result. Why?
 
-const prices = [49.99, 89.99, 29.99, 18.00];
+const prices = [49.99, 89.99, 29.99, 18.0];
 
-const total = prices.reduce(function(acc, price) {
+const total = prices.reduce(function (acc, price) {
   return acc + price;
-});
+}, 0);
 
 console.log("Total: $" + total);
 
