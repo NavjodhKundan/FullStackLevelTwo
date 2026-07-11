@@ -92,8 +92,43 @@ const tasks = [
 //   6. Append title, meta, and actions to the <li>
 //   7. Return the <li>
 
+console.log("----------Task 1----------");
 function createTaskCard(task) {
-  // your code here
+  const li = document.createElement("li");
+  li.classList.add("taks-card");
+  dataset.id = task.id;
+  dataset.priority = task.priority;
+
+  const p = document.createElement("p");
+  p.classList.add("task-title");
+  p.textContent = task.title;
+
+  const div = document.createElement("div");
+  div.classList.add("task-meta");
+  const prioritySpan = document.createElement("span");
+  prioritySpan.classList.add("priority-"+task.priority);
+  prioritySpan.textContent = task.priority.toUpperCase();
+  const assigneeSpan = document.createElement("span");
+  assigneeSpan.textContent = "👤 " + task.assignee;
+
+  const cardActionDiv = document.createElement("div");
+  cardActionDiv.classList.add("card-actions");
+  const completeButton = document.createElement("button");
+  completeButton.classList.add("complete-btn");
+  completeButton.textContent = "✅ Complete";
+  const removeButton = document.createElement("button");
+  removeButton.classList.add("remove-btn");
+  removeButton.textContent = "🗑️ Remove";
+
+  if(task.status === "done"){
+    li.classList.add("completed");
+  }
+  
+  li.appendChild(p);
+  li.appendChild(div);
+  li.appendChild(cardActionDiv);
+
+  return li;
 }
 
 // ----------------------------------------------------------
@@ -123,12 +158,51 @@ function createTaskCard(task) {
 //   #count-inprogress → inprogress tasks count
 //   #count-done       → done tasks count
 
+console.log("----------Task 2----------");
 function updateCounts(taskList) {
-  // your code here
+  const todoList = document.querySelectorAll("#list-todo");
+  const inprogressList = document.querySelectorAll("#list-inprogress");
+  const doneList = document.querySelectorAll("#list-done");
+
+  const taskCount = document.getElementById("#task-count");
+  taskCount.textContent = taskList.length + " tasks";
+
+  const completedCount = document.getElementById("#completed-count");
+  completedCount.textContent = "✅ " + doneList.length + " done";
+
+  const pendingCount = document.getElementById("#pending-count");
+  pendingCount.textContent = "⏳ " + inprogressList.length + todoList.length + " pending"
+
+  const todoCount = document.getElementById("#count-todo");
+  todoCount.textContent = todoList.length;
+
+  const inprogressCount = document.getElementById("#count-inprogress");
+  inprogressCount.textContent = inprogressList.length;
+
+  const doneCount = document.getElementById("#count-done");
+  doneCount.textContent = doneList.length;
 }
 
 function renderBoard(taskList) {
-  // your code here
+  const todoList = document.querySelectorAll("#list-todo");
+  todoList.innerHHTML = "";
+  const inprogressList = document.querySelectorAll("#list-inprogress");
+  inprogressList.innerHHTML = "";
+  const doneList = document.querySelectorAll("#list-done");
+  doneList.innerHHTML = "";
+
+  taskList.forEach(task => {
+    const card = createTaskCard(task);
+    if(task.status === "todo"){
+      todoList.append(card);
+    } else if (task.status === "inprogress"){
+      inprogressList.append(card);
+    } else if (task.status === "done"){
+      doneList.append(card);
+    }
+  });
+
+  updateCounts(taskList);
 }
 
 // ----------------------------------------------------------
@@ -154,11 +228,31 @@ function renderBoard(taskList) {
 //   document.getElementById("add-task-btn")
 //     .addEventListener("click", handleAddTask);
 
+console.log("----------Task 3----------");
 function handleAddTask() {
-  // your code here
+  const taskTitleInput = document.querySelector("#task-title-input").value.trim();
+  const taskAssigneeInput = document.querySelector("#task-assignee-input").value.trim();
+  const taskPriorityInput = document.querySelector("#task-priority-input").value;
+  const taskStatusInput = document.querySelector("#task-status-input").value;
+
+  if(taskTitleInput === ""){
+    console.log("Title is required");
+    return;
+  }
+
+  const newTask = {id: Date.now(), tirle: taskTitleInput, assignee: taskAssigneeInput || "Unassigned", 
+    priority: taskPriorityInput, status: taskStatusInput};
+
+  tasks.push(newTask);
+
+  renderBoard(tasks);
+
+  taskTitleInput.innerHHTML = "";
+  taskAssigneeInput.innerHHTML = "";
 }
 
 // wire up here
+document.getElementById("add-task-btn").addEventListener("click", handleAddTask);
 
 // ----------------------------------------------------------
 // TASK 4 — handleBoardClick (event delegation for complete + remove)
@@ -197,11 +291,36 @@ function handleAddTask() {
 //
 // Write a comment: why use .closest() instead of event.target directly?
 
+console.log("----------Task 4----------");
 function handleBoardClick(event) {
-  // your code here
+  const target = event.target;
+  const taskCard = target.closest(".task-card");
+  if(!taskCard){
+    return;
+  }
+  const taskId = parseInt(taskCard.dataset.id);
+  const found = tasks.find(task => {
+    return task.id === taskId;
+  });
+
+  if(target.classList.contains("complete-btn")){
+    found.status = "done";
+    found.classList.add("completed");
+    const doneList = document.querySelector("#list-done");
+    doneList.appendChild(taskCard);
+    updateCounts(tasks);
+  } else if (target.classList.contains("remove-btn")){
+    const index = tasks.findIndex(t => t.id === taskId);
+    tasks.splice(index, 1);
+    taskCard.remove();
+    updateCounts(tasks);
+  }
 }
 
 // wire up here
+document.querySelector(".board").addEventListener("click", handleBoardClick);
+// user can click on any elemnt inside the task card and closest() will find
+// the nearest parent with task-card class.
 
 // ----------------------------------------------------------
 // TASK 5 — handleFilterClick (filter buttons)
@@ -233,8 +352,14 @@ function handleBoardClick(event) {
 // Write a comment: why use delegation here instead of
 // individual listeners on each button?
 
+console.log("----------Task 5----------");
 function handleFilterClick(event) {
-  // your code here
+  const filterValue = event.target.dataset.filter;
+  if(!filterValue){
+    console.log("clicked something that's not a button");
+  }
+
+  
 }
 
 // wire up here

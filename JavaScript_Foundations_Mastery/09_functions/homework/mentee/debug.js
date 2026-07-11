@@ -16,10 +16,12 @@ const getFullName = (first, last) => {
 console.log(getFullName("Alex", "Rivera"));
 
 // What's wrong ↓
-
+// because there is no return key word.
 // Your fix — write TWO versions:
 //   a) Fix by adding return inside the braces
+//      return first + " " + last;
 //   b) Fix by removing the braces (one-liner implicit return)
+// const getFullName = (first, last) =>  first + " " + last;
 
 
 // ----------------------------------------------------------
@@ -44,12 +46,31 @@ console.log(getRoleLabel("mod"));     // undefined ❌
 console.log(getRoleLabel("member"));  // undefined ❌
 
 // What's wrong ↓
-
+// no return key word
 // Your fix ↓
 // Bonus: rewrite the whole function as an arrow function
 // using nested ternaries (just to see what it looks like —
 // then write a comment about whether you'd actually use it).
 
+function getRoleLabel(role) {
+  if (role === "admin") {
+    return "Admin";
+  } else if (role === "mod") {
+    return "Moderator";
+  } else {
+    return "Member";
+  }
+}
+
+const getRoleLabel = (role) => {
+  if (role === "admin") {
+    return "Admin";
+  } else if (role === "mod") {
+    return "Moderator";
+  } else {
+    return "Member";
+  }
+}
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -67,7 +88,16 @@ console.log(applyDiscount(100, 20));  // expected: 80
 console.log(applyDiscount(50));       // expected: 45
 
 // Bug 1 (math) ↓
-
+// we should convert discountPercent by dividing by 100 
+// and then substracting from final price
 // Bug 2 (style) ↓
+//should use arrow function to calculate final price
 
 // Your fix ↓
+const applyDiscount = (price, discountPercent = 10) => {
+  const discountAmount = price * discountPercent/100;
+  const finalPrice = price - discountAmount;
+  return finalPrice;
+};
+
+const applyDiscount = (price, discountPercent = 10) => price - (price*(discountPercent/100));

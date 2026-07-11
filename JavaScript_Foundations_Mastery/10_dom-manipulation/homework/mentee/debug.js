@@ -11,16 +11,17 @@
 // ----------------------------------------------------------
 // This should set the board title but logs a TypeError. Why?
 
-function renderBoardTitle() {
-  const titleEl = document.querySelector(".board-title");
-  titleEl.textContent = "My Task Board";
-}
+// function renderBoardTitle() {
+//   const titleEl = document.querySelector(".board-title");
+//   titleEl.textContent = "My Task Board";
+// }
 
-renderBoardTitle();
+// renderBoardTitle();
 
 // What's wrong ↓
-
+// there should be # before board-title
 // Your fix ↓
+// document.querySelector("#board-title");
 
 
 // ----------------------------------------------------------
@@ -43,9 +44,9 @@ function renderTasks() {
 renderTasks();
 
 // What's wrong ↓
-
+// we should use appendChild not replacing li with iteration
 // Your fix ↓
-
+// remove list.innerHTML = li.outerHTML; and add list.appendChild(li);
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -65,7 +66,8 @@ function highlightTasks() {
 highlightTasks();
 
 // Bug 1 ↓
-
+// should use for each loop or there should be no equal to sign when comapring i with hifhcards.length
 // Bug 2 ↓
-
+// 
 // Your fix ↓
+// for (let i = 0; i < highCards.length; i++) {...}
