@@ -1,4 +1,4 @@
-# 🎯 Event Listeners — Live Class
+`# 🎯 Event Listeners — Live Class
 
 ---
 

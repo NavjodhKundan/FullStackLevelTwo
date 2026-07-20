@@ -95,9 +95,9 @@ const tasks = [
 console.log("----------Task 1----------");
 function createTaskCard(task) {
   const li = document.createElement("li");
-  li.classList.add("taks-card");
-  dataset.id = task.id;
-  dataset.priority = task.priority;
+  li.classList.add("task-card");
+  li.dataset.id = task.id;
+  li.dataset.priority = task.priority;
 
   const p = document.createElement("p");
   p.classList.add("task-title");
@@ -119,14 +119,18 @@ function createTaskCard(task) {
   const removeButton = document.createElement("button");
   removeButton.classList.add("remove-btn");
   removeButton.textContent = "🗑️ Remove";
-
+  
   if(task.status === "done"){
     li.classList.add("completed");
   }
-  
+
   li.appendChild(p);
+  div.appendChild(prioritySpan);
+  div.appendChild(assigneeSpan);
   li.appendChild(div);
   li.appendChild(cardActionDiv);
+  cardActionDiv.appendChild(completeButton);
+  cardActionDiv.appendChild(removeButton);
 
   return li;
 }
@@ -160,36 +164,50 @@ function createTaskCard(task) {
 
 console.log("----------Task 2----------");
 function updateCounts(taskList) {
-  const todoList = document.querySelectorAll("#list-todo");
-  const inprogressList = document.querySelectorAll("#list-inprogress");
-  const doneList = document.querySelectorAll("#list-done");
+  // const todoList = document.querySelectorAll("#list-todo");
+  // const inprogressList = document.querySelectorAll("#list-inprogress");
+  // const doneList = document.querySelectorAll("#list-done");
 
-  const taskCount = document.getElementById("#task-count");
+  let todoList = 0;
+  let inprogressList = 0;
+  let doneList = 0;
+
+  for(let i=0;i<taskList.length;i++){
+    if(taskList[i].status === "todo"){
+      todoList++;
+    } else if (taskList[i].status === "inprogress"){
+      inprogressList++;
+    } else if (taskList[i].status === "done"){
+      doneList++;
+    }
+  }
+
+  const taskCount = document.querySelector("#task-count");
   taskCount.textContent = taskList.length + " tasks";
 
-  const completedCount = document.getElementById("#completed-count");
-  completedCount.textContent = "✅ " + doneList.length + " done";
+  const completedCount = document.querySelector("#completed-count");
+  completedCount.textContent = "✅ " + doneList + " done";
 
-  const pendingCount = document.getElementById("#pending-count");
-  pendingCount.textContent = "⏳ " + inprogressList.length + todoList.length + " pending"
+  const pendingCount = document.querySelector("#pending-count");
+  pendingCount.textContent = "⏳ " + parseInt(inprogressList + todoList) + " pending"
 
-  const todoCount = document.getElementById("#count-todo");
-  todoCount.textContent = todoList.length;
+  const todoCount = document.querySelector("#count-todo");
+  todoCount.textContent = todoList;
 
-  const inprogressCount = document.getElementById("#count-inprogress");
-  inprogressCount.textContent = inprogressList.length;
+  const inprogressCount = document.querySelector("#count-inprogress");
+  inprogressCount.textContent = inprogressList;
 
-  const doneCount = document.getElementById("#count-done");
-  doneCount.textContent = doneList.length;
+  const doneCount = document.querySelector("#count-done");
+  doneCount.textContent = doneList;
 }
 
 function renderBoard(taskList) {
-  const todoList = document.querySelectorAll("#list-todo");
-  todoList.innerHHTML = "";
-  const inprogressList = document.querySelectorAll("#list-inprogress");
-  inprogressList.innerHHTML = "";
-  const doneList = document.querySelectorAll("#list-done");
-  doneList.innerHHTML = "";
+  const todoList = document.querySelector("#list-todo");
+  todoList.innerHTML = "";
+  const inprogressList = document.querySelector("#list-inprogress");
+  inprogressList.innerHTML = "";
+  const doneList = document.querySelector("#list-done");
+  doneList.innerHTML = "";
 
   taskList.forEach(task => {
     const card = createTaskCard(task);
@@ -235,20 +253,22 @@ function handleAddTask() {
   const taskPriorityInput = document.querySelector("#task-priority-input").value;
   const taskStatusInput = document.querySelector("#task-status-input").value;
 
-  if(taskTitleInput === ""){
+  if(!taskTitleInput){
     console.log("Title is required");
     return;
   }
 
-  const newTask = {id: Date.now(), tirle: taskTitleInput, assignee: taskAssigneeInput || "Unassigned", 
+  const newTask = {id: Date.now(), title: taskTitleInput, 
+    assignee: taskAssigneeInput || "Unassigned", 
     priority: taskPriorityInput, status: taskStatusInput};
 
   tasks.push(newTask);
 
+
   renderBoard(tasks);
 
-  taskTitleInput.innerHHTML = "";
-  taskAssigneeInput.innerHHTML = "";
+  document.querySelector("#task-title-input").value = "";
+  document.querySelector("#task-assignee-input").value = "";
 }
 
 // wire up here
@@ -293,8 +313,8 @@ document.getElementById("add-task-btn").addEventListener("click", handleAddTask)
 
 console.log("----------Task 4----------");
 function handleBoardClick(event) {
-  const target = event.target;
-  const taskCard = target.closest(".task-card");
+  const targetCard = event.target;
+  const taskCard = targetCard.closest(".task-card");
   if(!taskCard){
     return;
   }
@@ -303,13 +323,13 @@ function handleBoardClick(event) {
     return task.id === taskId;
   });
 
-  if(target.classList.contains("complete-btn")){
+  if(targetCard.classList.contains("complete-btn")){
     found.status = "done";
-    found.classList.add("completed");
+    taskCard.classList.add("completed");
     const doneList = document.querySelector("#list-done");
     doneList.appendChild(taskCard);
     updateCounts(tasks);
-  } else if (target.classList.contains("remove-btn")){
+  } else if (targetCard.classList.contains("remove-btn")){
     const index = tasks.findIndex(t => t.id === taskId);
     tasks.splice(index, 1);
     taskCard.remove();
@@ -359,10 +379,27 @@ function handleFilterClick(event) {
     console.log("clicked something that's not a button");
   }
 
-  
+  const filterBtn = document.querySelectorAll(".filter-btn");
+  filterBtn.forEach(btn => {
+    btn.classList.remove("active");
+    event.target.classList.add("active");
+  })
+
+  const taskCard = document.querySelectorAll(".task-card");
+  taskCard.forEach(card => {
+    if(filterValue === "all"){
+      card.classList.remove("hidden");
+    } else if (card.dataset.priority === filterValue){
+      card.classList.remove("hidden");
+    } else {
+      card.classList.add("hidden");
+    }
+  })
 }
 
 // wire up here
+document.querySelector(".header-right").addEventListener("click", handleFilterClick);
+// Because we don't need to add and remove listner to each class. 
 
 // ----------------------------------------------------------
 // TASK 6 — handleKeyDown (keyboard shortcuts)
@@ -381,11 +418,22 @@ function handleFilterClick(event) {
 //
 // Wire it up to document.
 
+console.log("----------Task 6----------");
 function handleKeyDown(event) {
-  // your code here
+  if(event.key === "Escape"){
+    const titleInput = document.querySelector("#task-title-input");
+    titleInput.value = "";
+    const assigneeInput = document.querySelector("#task-assignee-input");
+    assigneeInput.value = "";
+    console.log("Inputes cleared");
+  } else if (event.key === "Enter" && event.target.id === "task-title-input"){
+    console.log("Inputes entred");
+    handleAddTask();
+  }
 }
 
 // wire up here
+document.addEventListener("keydown", handleKeyDown);
 
 // ----------------------------------------------------------
 // TASK 7 — Connect the dots: init
@@ -395,8 +443,9 @@ function handleKeyDown(event) {
 //
 // Call init() at the bottom.
 
+console.log("----------Task 7----------");
 function init() {
-  // your code here
+  renderBoard(tasks);
 }
 
 // ----------------------------------------------------------
@@ -422,6 +471,21 @@ function init() {
 //     .addEventListener("input", handleSearch);
 //
 // Write a comment: why use "input" and not "change" for live search?
+
+function handleSearch(event){
+  const searchQuery = event.target.value.toLowerCase().trim();
+  const taskCard = document.querySelectorAll(".task-card");
+  taskCard.forEach(task => {
+    const taksTitle = task.querySelector(".task-title").textContent.toLowerCase();
+    if(taksTitle.includes(searchQuery)){
+      task.classList.remove("hidden");
+    } else {
+      task.classList.add("hidden");
+    }
+  });
+}
+
+document.getElementById("search-input").addEventListener("input", handleSearch);
 
 // ============================================================
 // WIRE UP ALL LISTENERS (above init)

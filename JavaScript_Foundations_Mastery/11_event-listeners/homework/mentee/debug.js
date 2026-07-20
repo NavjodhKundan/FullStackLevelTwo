@@ -22,8 +22,10 @@ document.getElementById("add-task-btn")
   .addEventListener("click", logTitle());
 
 // What's wrong ↓
-
+// we are calling the functiuon not passing it.
 // Your fix ↓
+// we will pass the function document.getElementById("add-task-btn")
+// .addEventListener("click", logTitle);
 
 
 // ----------------------------------------------------------
@@ -50,8 +52,9 @@ document.querySelector(".header-right")
   .addEventListener("click", handleFilter);
 
 // What's wrong ↓
-
+// should use === insted of !==
 // Your fix ↓
+// card.dataset.priority === filter
 
 
 // ----------------------------------------------------------
@@ -74,7 +77,9 @@ document.querySelector(".board")
   .addEventListener("click", handleBoardClick);
 
 // Bug 1 ↓
-
+// should check for closest as it can be null
 // Bug 2 ↓
-
+// should use splice to remove element
 // Your fix ↓
+// if(!card){ return };
+// tasks.splice(index, 1);
