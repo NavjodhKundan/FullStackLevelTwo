@@ -98,13 +98,13 @@ function handleStatusChange(event) {
 
   if (status === "active") {
     badgeEl.textContent = "🟢 Active";
-    classList.add("active");
+    badgeEl.classList.add("active");
   } else if (status === "away") {
     badgeEl.textContent = "🟡 Away";
-    classList.add("away");
+    badgeEl.classList.add("away");
   } else {
     badgeEl.textContent = "🔴 Offline";
-    classList.add("offline");
+    badgeEl.classList.add("offline");
   }
 }
 
@@ -147,9 +147,9 @@ function handleBioInput(event) {
   selectCharCount.classList.remove("warning", "limit");
 
   if (charValue >= 200) {
-    classList.add("limit");
+    selectCharCount.classList.add("limit");
   } else if (charValue >= 160) {
-    classList.add("warning");
+    selectCharCount.classList.add("warning");
   }
 }
 
@@ -199,14 +199,14 @@ document.getElementById("bio-input").addEventListener("input", handleBioInput);
 //   document.getElementById("add-skill-form")
 //     .addEventListener("submit", handleSkillSubmit);
 
-function updateSkillCount() {
+function updatedSkillCount() {
   const skillList = document.getElementById("skills-list");
-  document.getElementById("skill-count");
-  textContent = skillList.children.length;
+  document.getElementById("skill-count").textContent =
+    skillList.children.length;
 }
 
 function addSkillToPage(skillName) {
-  const skillsList = document.getElementById("skill-list");
+  const skillsList = document.getElementById("skills-list");
   const li = document.createElement("li");
   li.textContent = skillName;
 
@@ -216,7 +216,7 @@ function addSkillToPage(skillName) {
   });
 
   skillsList.appendChild(li);
-  updateSkillCount();
+  updatedSkillCount();
 }
 
 function handleSkillSubmit(event) {
@@ -225,10 +225,14 @@ function handleSkillSubmit(event) {
   const elTrim = skillInput.value.trim();
 
   if (elTrim) {
-    addSkillToPage(skillName);
+    addSkillToPage(elTrim);
     skillInput.value = "";
   }
 }
+
+document
+  .getElementById("add-skill-form")
+  .addEventListener("submit", handleSkillSubmit);
 
 // wire up the event listener here
 
@@ -309,9 +313,9 @@ document.addEventListener("keydown", handleKeyDown);
 // event.target and event.currentTarget here?
 
 function handleSkillClick(event) {
-  if (event.target.tagName === "") {
+  if (event.target.tagName === "LI") {
     event.target.remove();
-    updateSkillCount();
+    updatedSkillCount();
   }
 }
 
@@ -365,9 +369,13 @@ document
 // ABOVE init() — they run as the script loads.
 
 function init() {
-  // your code here
+  initialSkills.forEach((skill) => addSkillToPage(skill));
+
+  const bioEl = document.getElementById("bio-input");
+  handleBioInput({ target: bioEl });
 }
 
+init();
 // ============================================================
 // WIRE UP ALL LISTENERS (above init)
 // ============================================================
@@ -377,4 +385,3 @@ function init() {
 // ============================================================
 // START THE PAGE
 // ============================================================
-init();
