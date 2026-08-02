@@ -77,7 +77,16 @@ let tasks = [];
 // This function will be called after EVERY change.
 
 function saveTasks() {
-  // your code here
+  //stroing tasks data to taskBoardData in localstorage
+  localStorage.setItem("taskBoardData", JSON.stringify(tasks));
+
+  //getting data from html
+  const saveIndicator = document.querySelector("#save-indicator");
+  saveIndicator.classList.add("visible");// adding class
+  //removing class after 1500 milli seconds
+  setTimeout(function(){
+    saveIndicator.classList.remove("visible");
+  }, 1500);
 }
 
 // ----------------------------------------------------------
@@ -100,7 +109,17 @@ function saveTasks() {
 // ⚠️  Always check for null before parsing.
 
 function loadTasks() {
-  // your code here
+  //getting data from local storage
+  const raw = localStorage.getItem("taskBoardData");
+
+  //checking if raw is null
+  if(!raw){
+    tasks = [...defaultTasks];//adding data to tasks
+    saveTasks();//saving data to local storage
+    return;
+  } else {
+    tasks = JSON.parse(raw);//converting data from strings to objects
+  }
 }
 
 // ----------------------------------------------------------
@@ -121,7 +140,45 @@ function loadTasks() {
 // Return the <li> — do NOT append it here.
 
 function createTaskCard(task) {
-  // your code here
+  const li = document.createElement("li");
+  li.classList.add("task-card");
+  li.dataset.id = task.id;
+  li.dataset.priority = task.priority;
+
+  const title = document.createElement("p");
+  title.classList.add("task-title");
+  title.textContent = task.title;
+
+  const div = document.createElement("div");
+  div.classList.add("task-meta");
+  const prioritySpan = document.createElement("span");
+  prioritySpan.classList.add("priority-"+task.priority);
+  prioritySpan.textContent = task.priority.toUpperCase();
+  const assigneeSpan = document.createElement("span");
+  assigneeSpan.textContent = "👤 " + task.assignee;
+
+  const cardActionDiv = document.createElement("div");
+  cardActionDiv.classList.add("card-actions");
+  const completeButton = document.createElement("button");
+  completeButton.classList.add("complete-btn");
+  completeButton.textContent = "✅ Complete";
+  const removeButton = document.createElement("button");
+  removeButton.classList.add("remove-btn");
+  removeButton.textContent = "🗑️ Remove";
+
+  li.appendChild(title);
+  div.appendChild(prioritySpan);
+  div.appendChild(assigneeSpan);
+  li.appendChild(div);
+  li.appendChild(cardActionDiv);
+  cardActionDiv.appendChild(completeButton);
+  cardActionDiv.appendChild(removeButton);
+  
+  if(task.status === "done"){
+    li.classList.add("completed");
+  }
+
+  return li;
 }
 
 // ----------------------------------------------------------
@@ -142,11 +199,59 @@ function createTaskCard(task) {
 // (Same as Event Listeners homework)
 
 function updateCounts() {
-  // your code here
+  let todoList = 0;
+  let inprogressList = 0;
+  let doneList = 0;
+
+  for(let i=0;i<tasks.length;i++){
+    if(tasks[i].status === "todo"){
+      todoList++;
+    } else if (tasks[i].status === "inprogress"){
+      inprogressList++;
+    } else if (tasks[i].status === "done"){
+      doneList++;
+    }
+  }
+
+  const taskCount = document.querySelector("#task-count");
+  taskCount.textContent = tasks.length + " tasks";
+
+  const completedCount = document.querySelector("#completed-count");
+  completedCount.textContent = "✅ " + doneList + " done";
+
+  const pendingCount = document.querySelector("#pending-count");
+  pendingCount.textContent = "⏳ " + parseInt(inprogressList + todoList) + " pending"
+
+  const todoCount = document.querySelector("#count-todo");
+  todoCount.textContent = todoList;
+
+  const inprogressCount = document.querySelector("#count-inprogress");
+  inprogressCount.textContent = inprogressList;
+
+  const doneCount = document.querySelector("#count-done");
+  doneCount.textContent = doneList;
 }
 
 function renderBoard() {
-  // your code here
+  const todoList = document.querySelector("#list-todo");
+  todoList.innerHTML = "";
+  const inprogressList = document.querySelector("#list-inprogress");
+  inprogressList.innerHTML = "";
+  const doneList = document.querySelector("#list-done");
+  doneList.innerHTML = "";
+
+  tasks.forEach(task => {
+    const card = createTaskCard(task);
+    if(task.status === "todo"){
+      todoList.append(card);
+    } else if (task.status === "inprogress"){
+      inprogressList.append(card);
+    } else if (task.status === "done"){
+      doneList.append(card);
+    }
+  });
+
+  updateCounts();
 }
 
 // ----------------------------------------------------------
@@ -168,7 +273,25 @@ function renderBoard() {
 //     .addEventListener("click", handleAddTask)
 
 function handleAddTask() {
-  // your code here
+  const taskTitleInput = document.querySelector("#task-title-input").value.trim();
+  const taskAssigneeInput = document.querySelector("#task-assignee-input").value.trim();
+  const taskPriorityInput = document.querySelector("#task-priority-input").value;
+  const taskStatusInput = document.querySelector("#task-status-input").value;
+
+  if(!taskTitleInput){
+    return;
+  }
+
+  const newTask = {id: Date.now(), title: taskTitleInput, 
+  assignee: taskAssigneeInput || "Unassigned", 
+  priority: taskPriorityInput, status: taskStatusInput};
+
+  tasks.push(newTask);
+  saveTasks();
+  renderBoard();
+
+  document.querySelector("#task-title-input").value = "";
+  document.querySelector("#task-assignee-input").value = "";
 }
 
 document
@@ -200,7 +323,28 @@ document
 // Wire it up to document.querySelector(".board")
 
 function handleBoardClick(event) {
-  // your code here
+  const targetCard = event.target;
+  const taskCard = targetCard.closest(".task-card");
+  if(!taskCard){
+    return;
+  }
+
+  const taskId = parseInt(taskCard.dataset.id);
+  const found = tasks.find(task => {
+    return task.id === taskId;
+  });
+
+  if(targetCard.classList.contains("complete-btn")){
+    found.status = "done";
+    updateCounts();
+    renderBoard();
+  } else if (targetCard.classList.contains("remove-btn")){
+    const index = tasks.findIndex(t => t.id === taskId);
+    tasks.splice(index, 1);
+    taskCard.remove();
+    updateCounts();
+    renderBoard();
+  }
 }
 
 document.querySelector(".board").addEventListener("click", handleBoardClick);
@@ -223,7 +367,11 @@ document.querySelector(".board").addEventListener("click", handleBoardClick);
 //     .addEventListener("click", handleClearAll)
 
 function handleClearAll() {
-  // your code here
+  if(!confirm("Clear all tasks? This cannot be undone.")){ return; }
+  localStorage.removeItem("taskBoardData");
+  tasks = [...defaultTasks];
+  saveTasks();
+  renderBoard();
 }
 
 document.getElementById("clear-btn").addEventListener("click", handleClearAll);
@@ -239,7 +387,10 @@ document.getElementById("clear-btn").addEventListener("click", handleClearAll);
 // Call init() at the bottom.
 
 function init() {
-  // your code here
+  loadTasks();
+  renderBoard();
+  const savedFilter = loadFilter();
+  
 }
 
 // ----------------------------------------------------------
@@ -265,6 +416,43 @@ function init() {
 //       Apply the saved filter (update active button + show/hide cards)
 //
 // Write a comment: what other UI state might be worth persisting?
+
+function saveFilter(filterValue){
+  localStorage.setItem("taskFilter", filterValue);
+}
+
+function loadFilter(){
+  return localStorage.getItem("taskFilter" || "all");
+}
+
+function handleFilterClick(event) {
+  const filterValue = event.target.dataset.filter;
+  if(!filterValue){
+    console.log("clicked something that's not a button");
+  }
+
+  const filterBtn = document.querySelectorAll(".filter-btn");
+  filterBtn.forEach(btn => {
+    btn.classList.remove("active");
+    event.target.classList.add("active");
+  })
+
+  const taskCard = document.querySelectorAll(".task-card");
+  taskCard.forEach(card => {
+    if(filterValue === "all"){
+      card.classList.remove("hidden");
+    } else if (card.dataset.priority === filterValue){
+      card.classList.remove("hidden");
+    } else {
+      card.classList.add("hidden");
+    }
+  })
+
+  saveFilter(filterValue);
+}
+
+document.querySelector(".header-right").addEventListener("click", handleFilterClick);
+
 
 // ============================================================
 // START

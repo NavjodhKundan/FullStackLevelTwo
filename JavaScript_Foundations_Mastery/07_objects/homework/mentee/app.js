@@ -239,7 +239,7 @@ for(let i=0;i<inventory.length;i++){
 
 console.log("----------Task 8----------");
 let topValueIndex = 0;
-for(let i=outOfStockCount;i<inventory.length;i++){
+for(let i=0;i<inventory.length;i++){
     let currenValue = inventory[i].price * inventory[i].stock;
     let topValue = inventory[topValueIndex].price * inventory[topValueIndex].stock;
     if(currenValue > topValue){

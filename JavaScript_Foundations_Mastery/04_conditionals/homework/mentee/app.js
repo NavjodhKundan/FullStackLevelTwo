@@ -236,7 +236,7 @@ if(average >= 90){
     console.log("Grade: F");
 }
 
-if (mathScore < 60 || scienceScore < 60 || earnedScore < 60){
+if (mathScore < 60 || scienceScore < 60 || englishScore < 60){
     console.log("Warning: At least one subject needs attention.");
 } else {
     console.log("All subjects are passing");

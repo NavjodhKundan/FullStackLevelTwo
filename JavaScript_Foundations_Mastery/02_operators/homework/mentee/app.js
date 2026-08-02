@@ -109,8 +109,8 @@ console.log(playerScore >= highScore);
 // Log: "New high score: " + highScore
 
 console.log("Task 6");
-console.log(playerScore > highScore);
-//highScore = playerScore;
+console.log(playerScore >= highScore);
+highScore = playerScore;
 console.log("New high score: " + highScore);
 
 // ----------------------------------------------------------

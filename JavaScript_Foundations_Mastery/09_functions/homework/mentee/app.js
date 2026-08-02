@@ -158,7 +158,8 @@ users.forEach(function(user){
 
 console.log("----------Task 3----------");
 const formatUserDisplay = (user) => user.username + " | " + 
-  (user.isPremium ? "Premium" : "Free") + " | Age: " + user.age;
+  (user.isPremium ? "Premium" : "Free") + " | Age: " + user.age + 
+  " | Email: " + user.email;
 users.forEach(user => console.log(formatUserDisplay(user)));
 //we are only returing one line and implementing other code so it is a good idea to user one line of code
 
@@ -178,7 +179,7 @@ users.forEach(user => console.log(formatUserDisplay(user)));
 console.log("----------Task 4----------");
 function getUserById (userList, id){
   let found = "";
-  userList.forEach(user => user.id === id ? found=true : null);
+  userList.forEach(user => user.id === id ? found=user : null);
   return found ? found : null;
 }
 console.log(getUserById(users, 3));
@@ -202,17 +203,21 @@ console.log(getUserById(users, 99));
 // For each result, log the count and usernames using map.
 
 console.log("----------Task 5----------");
-function filterByAge(userList, minAge, maxAge = 100){
-  const userByAge = [];
-  userList.forEach(user => user.age>minAge && user.age<maxAge ? userByAge.push(user) : "");
-  return userByAge;
-}
+
+const filterByAge = function(userList, minAge, maxAge = 100){
+  return userList.filter(user => 
+    user.age >= minAge && user.age <= maxAge
+  );
+};
+
 let count = 0;
 const userByAge = filterByAge(users, 18).map(function(user){
   count++;
   return user.username;
 });
-console.log(userByAge);
+userByAge.forEach(user => {
+  console.log(user);
+})
 
 // ----------------------------------------------------------
 // TASK 6 — getAccountStats  [FUNCTION DECLARATION]
@@ -272,12 +277,11 @@ console.log(getAccountStats(users));
 // (Hint: objects vs primitives — pass by reference vs value)
 
 console.log("----------Task 7----------");
-const promoteUser = (user) => user.isPremium = true;
+const promoteUser = (user) => {user.isPremium = true; return user};
 users.forEach(function(user){
   if(user.id === 2){
     console.log(user);
-    promoteUser(user);
-    console.log(user);
+    console.log(promoteUser(user));
   }
 });
 //because it is stored in an object in a memory so changing the object will be 
@@ -313,7 +317,7 @@ function processAccounts(userList){
     return formatUserDisplay(user);
   });
   const stats = getAccountStats(userList);
-  return {displayList, stats, skpped: userList.length-validUser.length};
+  return {displayList, stats, skipped: userList.length-validUser.length};
 }
 const result = processAccounts(users);
 result.displayList.forEach(user => console.log(user));

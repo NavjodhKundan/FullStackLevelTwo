@@ -164,10 +164,6 @@ function createTaskCard(task) {
 
 console.log("----------Task 2----------");
 function updateCounts(taskList) {
-  // const todoList = document.querySelectorAll("#list-todo");
-  // const inprogressList = document.querySelectorAll("#list-inprogress");
-  // const doneList = document.querySelectorAll("#list-done");
-
   let todoList = 0;
   let inprogressList = 0;
   let doneList = 0;

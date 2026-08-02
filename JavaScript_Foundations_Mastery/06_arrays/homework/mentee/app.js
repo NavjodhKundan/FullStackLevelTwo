@@ -214,7 +214,7 @@ console.log(`Class size now: ${studentNames.length}`);
 
 console.log("----------Task 8----------");
 let topStudentIndex = 0;
-for(let i=0;i<=studentScores.length;i++){
+for(let i=0;i<studentScores.length;i++){
     if(studentScores[i] > studentScores[topStudentIndex]){
         topStudentIndex = i;
     }

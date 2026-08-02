@@ -149,8 +149,8 @@ function createTaskCard(task) {
   
   li.appendChild(p);
   li.appendChild(div);
-  li.appendChild(span2);
-  li.appendChild(prioritySpan);
+  div.appendChild(span2);
+  div.appendChild(prioritySpan);
 
   if(task.status === "done"){
     li.classList.add("completed");

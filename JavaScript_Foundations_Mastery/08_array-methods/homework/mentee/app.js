@@ -297,7 +297,7 @@ const pendingRevenue = orders
 .reduce(function(acc, order){
   return acc+order.total;
 }, 0);
-console.log("Deliverd revenue: $" + pendingRevenue);
+console.log("Deliverd revenue: $" + deliveredRevenue);
 console.log("Unconfirmed revenue: $" + pendingRevenue);
 
 // ----------------------------------------------------------

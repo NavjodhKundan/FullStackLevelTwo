@@ -185,8 +185,9 @@ const restockAmount = 10;
 const maxStock = 50;
 while(stock < maxStock){
     stock += restockAmount;
-    console.log(`Restocked. Stock now: ${stock} unites.`);
+    console.log(`Restocked. Stock now: ${stock}`);
 }
+console.log(`✅ Fully restocked: ${stock} units.`);
 
 // ----------------------------------------------------------
 // TASK 8 — Connect the dots: find the first affordable item
@@ -207,6 +208,7 @@ while(stock < maxStock){
 
 console.log("-----------Task 8----------");
 let found = false;
+let currentPrice = 0;
 const maxAffordable = 20;
 for(let i=1;i<=6;i++){
     if(i===1){
@@ -222,14 +224,12 @@ for(let i=1;i<=6;i++){
     } else if(i===6){
         currentPrice = item6Price;
     }
-
-    if(currentPrice <= maxAffordable && found === false){
+}
+if(currentPrice <= maxAffordable && found === false){
         console.log(`First affordable item: Item ${i} at $${currentPrice}`);
         found = true;
-        break;
     }
-    console.log(`No affordable items found under $${maxAffordable}`);
-}
+console.log(`😞 No affordable items found under $${maxAffordable}`);
 
 // ----------------------------------------------------------
 // ⭐ STRETCH GOAL — Loyalty points
