@@ -20,8 +20,8 @@
 // DEFAULT PROFILE DATA
 // ============================================================
 const defaultProfile = {
-  bio: "Passionate developer with 4 years of experience building web apps.",
-  skills: ["JavaScript", "React", "Node.js", "CSS", "Git"],
+  bio: "",
+  skills: [],
   status: "active",
   darkMode: false,
 };
@@ -74,17 +74,17 @@ const defaultProfile = {
 // Call testStorage() and check the console.
 // Also open DevTools → Application → Local Storage to see the values.
 
-function testStorage() {
-  localStorage.setItem("userName", "Alex Rivera");
-  localStorage.setItem("userAge", String(28));
-  localStorage.setItem("isDark", String(false));
+// function testStorage() {
+//   localStorage.setItem("userName", "Alex Rivera");
+//   localStorage.setItem("userAge", String(28));
+//   localStorage.setItem("isDark", String(false));
 
-  console.log(localStorage.getItem("userName"));
-  console.log(localStorage.getItem("userAge"));
-  console.log(localStorage.getItem("isDark"));
-}
+//   console.log(localStorage.getItem("userName"));
+//   console.log(localStorage.getItem("userAge"));
+//   console.log(localStorage.getItem("isDark"));
+// }
 
-testStorage();
+// testStorage();
 
 // TASK 2 — JSON.stringify and JSON.parse
 // localStorage only stores strings. To save an object or array
@@ -109,33 +109,33 @@ testStorage();
 //
 // Call testObjectStorage().
 
-function testObjectStorage() {
-  const skillsArray = ["JS", "CSS", "React"];
-  localStorage.setItem("badSkills", skillsArray);
-  console.log(localStorage.getItem("badSkills"));
+// function testObjectStorage() {
+//   const skillsArray = ["JS", "CSS", "React"];
+//   localStorage.setItem("badSkills", skillsArray);
+//   console.log(localStorage.getItem("badSkills"));
 
-  localStorage.setItem("goodSkills", JSON.stringify(skillsArray));
+//   localStorage.setItem("goodSkills", JSON.stringify(skillsArray));
 
-  const rawString = localStorage.getItem("goodSkills");
-  console.log(rawString);
+//   const rawString = localStorage.getItem("goodSkills");
+//   console.log(rawString);
 
-  const parse = JSON.parse(rawString);
-  console.log(parse);
-  console.log(parse[0]);
-  // console.log(JSON.parse(rawString[0]));
+//   const parse = JSON.parse(rawString);
+//   console.log(parse);
+//   console.log(parse[0]);
+//   // console.log(JSON.parse(rawString[0]));
 
-  const user = {
-    name: "Alex",
-    age: 28,
-  };
+//   const user = {
+//     name: "Alex",
+//     age: 28,
+//   };
 
-  localStorage.setItem("user", JSON.stringify(user));
-  const getUserBack = JSON.parse(localStorage.getItem("user"));
-  console.log(getUserBack);
-  console.log(getUserBack.age);
-}
+//   localStorage.setItem("user", JSON.stringify(user));
+//   const getUserBack = JSON.parse(localStorage.getItem("user"));
+//   console.log(getUserBack);
+//   console.log(getUserBack.age);
+// }
 
-testObjectStorage();
+// testObjectStorage();
 
 // ----------------------------------------------------------
 // PART 2 — SAVING PROFILE DATA
@@ -169,15 +169,13 @@ testObjectStorage();
 //     .map(li => li.textContent)
 
 function getCurrentSkills() {
-  return Array.from(
-    document.querySelectorAll("#skills-list li").map((li) => {
-      li.textContent;
-    }),
-  );
+  return Array.from(document.querySelectorAll("#skills-list li")).map((li) => {
+    return li.textContent;
+  });
 }
 
 function saveProfile() {
-  profileData = {
+  const profileData = {
     bio: document.getElementById("bio-input").value,
     skills: getCurrentSkills(),
     status: document.getElementById("status-select").value,
@@ -185,9 +183,8 @@ function saveProfile() {
   };
 
   localStorage.setItem("profileData", JSON.stringify(profileData));
-
-  const status = getElementById("storage-status");
-  status.textContent(`✅ Saved at ${new Date().toLocaleTimeString()}`);
+  const status = document.getElementById("storage-status");
+  status.textContent = `✅ Saved at ${new Date().toLocaleTimeString()}`;
 
   status.className = "saved";
   console.log("Profile saved to localStorage");
@@ -242,7 +239,17 @@ document.getElementById("save-btn").addEventListener("click", saveProfile);
 //   - Call renderStatusBadge(defaultProfile.status)
 
 function renderWithDefaults() {
-  // your code here
+  document.getElementById("bio-input").value = defaultProfile.bio;
+
+  document.getElementById("skills-list").innerHTML = "";
+  defaultProfile.skills.forEach((skill) => {
+    addSkillToPage(skill);
+  });
+
+  updateSkillCount();
+
+  document.getElementById("status-select").value = defaultProfile.status;
+  renderStatusBadge(defaultProfile.status);
 }
 
 function loadProfile() {
@@ -255,11 +262,22 @@ function loadProfile() {
 
   const profileData = JSON.parse(saved);
   document.getElementById("bio-input").value = profileData.bio;
+  const charlength = profileData.bio.length;
+  document.getElementById("char-count").textContent = charlength + " / 200";
   document.getElementById("skills-list").innerHTML = "";
   profileData.skills.forEach((skill) => addSkillToPage(skill));
 
   document.getElementById("status-select").value = profileData.status;
   renderStatusBadge(profileData.status);
+
+  if (profileData.darkMode) {
+    document.body.classList.add("dark");
+    document.getElementById("theme-btn").textContent = "☀️ Light Mode";
+  }
+
+  const storageStatus = document.getElementById("storage-status");
+  storageStatus.textContent = "✅ Profile loaded from storage";
+  storageStatus.className = "saved";
 }
 
 // ----------------------------------------------------------
@@ -279,7 +297,13 @@ function loadProfile() {
 //     .addEventListener("click", clearProfile)
 
 function clearProfile() {
-  // your code here
+  localStorage.removeItem("profileData");
+  renderWithDefaults();
+  const status = document.getElementById("storage-status");
+  status.textContent = "🗑️ Data cleared";
+  status.className = "cleared";
+  document.getElementById("char-count").textContent = "0 / 200";
+  console.log("localStorage cleared");
 }
 
 document.getElementById("clear-btn").addEventListener("click", clearProfile);
@@ -298,14 +322,27 @@ document.getElementById("clear-btn").addEventListener("click", clearProfile);
 // (Same as Event Listeners lesson — copy your logic here)
 
 function addSkillToPage(skillName) {
-  // your code here
+  const skillList = document.getElementById("skills-list");
+  const li = document.createElement("li");
+  li.textContent = skillName;
+
+  li.addEventListener("click", function () {
+    li.remove();
+    updateSkillCount();
+    saveProfile();
+  });
+
+  skillList.appendChild(li);
+  updateSkillCount();
 }
 
 // Declare a function called updateSkillCount.
 // Updates #skill-count with the current number of skills.
 
 function updateSkillCount() {
-  // your code here
+  const skillList = document.getElementById("skills-list");
+  document.getElementById("skill-count").textContent =
+    skillList.children.length;
 }
 
 // Declare a function called renderStatusBadge.
@@ -313,8 +350,33 @@ function updateSkillCount() {
 // Sets the #status-badge text and class based on status value.
 // (Same as Event Listeners lesson)
 
+//  badgeEl.classList.remove("active", "away", "offline");
+
 function renderStatusBadge(status) {
-  // your code here
+  const statusBadge = document.getElementById("status-badge");
+  statusBadge.classList.remove("active", "away", "offline");
+
+  // if (status === "active") {
+  //   badgeEl.textContent = "🟢 Active";
+  //   badgeEl.classList.add("active");
+  // } else if (status === "away") {
+  //   badgeEl.textContent = "🟡 Away";
+  //   badgeEl.classList.add("away");
+  // } else {
+  //   badgeEl.textContent = "🔴 Offline";
+  //   badgeEl.classList.add("offline");
+  // }
+
+  if (status === "active") {
+    statusBadge.textContent = "Active";
+    statusBadge.classList.add("active");
+  } else if (status === "away") {
+    statusBadge.textContent = "Away";
+    statusBadge.classList.add("away");
+  } else {
+    statusBadge.textContent = "Offline";
+    statusBadge.classList.add("offline");
+  }
 }
 
 // ----------------------------------------------------------
@@ -343,15 +405,27 @@ function renderStatusBadge(status) {
 //    calls renderStatusBadge.
 
 function handleThemeToggle() {
-  // your code here
+  document.body.classList.toggle("dark");
+  const dark = document.body.classList.contains("dark");
+  document.getElementById("theme-btn").textContent = dark
+    ? "☀️ Light Mode"
+    : "🌙  Dark Mode";
+  saveProfile();
 }
 
 function handleSkillSubmit(event) {
-  // your code here
+  event.preventDefault();
+  const inputEl = document.getElementById("skill-input");
+  const inputName = inputEl.value.trim();
+
+  if (inputName) addSkillToPage(inputName);
+  saveProfile();
+  inputEl.value = "";
 }
 
 function handleStatusChange(event) {
-  // your code here
+  renderStatusBadge(event.target.value);
+  saveProfile();
 }
 
 document
@@ -386,8 +460,11 @@ document
 
 document
   .getElementById("bio-input")
+
   .addEventListener("input", function (event) {
-    // your code here
+    const length = event.target.value.length;
+    document.getElementById("char-count").textContent = length + " / 200";
+    saveProfile();
   });
 
 // ============================================================
