@@ -23,8 +23,9 @@ console.log(tasks.length);   // logs a large number — wrong
 console.log(tasks[0]);       // logs "{" — wrong, expected an object
 
 // What's wrong ↓
-
+// we need to prase it to conver string back to objects
 // Your fix ↓
+// JSON.prase(tasks);
 
 
 // ----------------------------------------------------------
@@ -54,9 +55,11 @@ function saveBoardState(taskList) {
 // Think about what could prevent the class from taking visual effect.
 
 // What's wrong ↓
-
+// we can set time out to 0
 // Your fix — conceptual explanation is enough here ↓
-
+// setTimeout(function() {
+//   indicator.classList.remove("visible");
+// }, 0);
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -75,7 +78,7 @@ function loadAndRender() {
   taskList.forEach(function(task) {
     const li = document.createElement("li");
     li.textContent = task.title;
-    document.getElementById("list-todo").appendChild(li);
+    const todoList = document.getElementById("list-todo").appendChild(li);
   });
 }
 
@@ -89,7 +92,16 @@ loadAndRender();
 loadAndRender(); // called again — what happens?
 
 // Bug 1 (crash on first load) ↓
-
+// we need to check for null when pulling data from local storage
 // Bug 2 (duplicates) ↓
+// we need to create todolist outside forloop and clear it before adding.
 
 // Your fix ↓
+// if(!raw) { return; }
+//  const todoList = document.getElementById("list-todo");
+//   todoList.innerHTML = "";
+//   taskList.forEach(function(task) {
+//     const li = document.createElement("li");
+//     li.textContent = task.title;
+//     todoList.appendChild(li);
+//   });

@@ -23,9 +23,9 @@ fetch(WEATHER_API + "?latitude=51.51&longitude=-0.13&current_weather=true")
   });
 
 // What's wrong ↓
-
+// because there is no tempreture object defined. It is defined under current_weather
 // Your fix ↓
-
+// console.log("Temperature: " + data.current_weather.temperature);
 
 // ----------------------------------------------------------
 // 🟡 DEBUG 2 — Medium
@@ -49,9 +49,9 @@ fetch(WEATHER_API + "?latitude=40.71&longitude=-74.01&current_weather=true")
   });
 
 // What's wrong ↓
-
+// missing return 
 // Your fix ↓
-
+// return response.json();
 
 // ----------------------------------------------------------
 // 🔴 DEBUG 3 — Hard
@@ -84,7 +84,10 @@ fetchCity("london");  // works (kinda)
 fetchCity("tokyo");   // Bug 2: crashes before even fetching
 
 // Bug 1 ↓
-
+// wrong path
 // Bug 2 ↓
+// there is no such "tokyo" city defined in CITIES
 
 // Your fix ↓
+// const temp = data.current_weather.temperature;
+// check if city is null if(!city) { return; }
