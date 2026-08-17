@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport">
+        <title>Transactions</title>
+        <link rel="stylesheet" href="../CSS/style.css">
+    </head>
+    <body>
+        
+        <header class="userHeader">
+            <div class="userProfile">
+                <img src="../images/duckImage.jpg">
+                <h2 class="UserName"></h2>
+            </div>
+
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="transaction.html">Transactions</a></li>
+                <li><a href="financies.html">Financial Report</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+        </header>
+
+        <div class="body">
+            <div class="addCard">
+                <form id="transactionForm">
+                    <div class="formLabel">
+                        <label for="amount">Amount</label> 
+                        <input type="number" step="any" id="amount" name="amount" placeholder="0.00" required>
+                    </div>
+
+                    <div class="formLabel">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select category</option>
+                            <option value="grocery">Grocery</option>
+                            <option value="bill">Bill Payment</option>
+                            <option value="loan">Loan Payment</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="formLabel">
+                        <label for="date">Date</label> 
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="formLabel">
+                    <label for="description" class="description">Description</label> 
+                    <textarea id="description" name="description" placeholder="Transaction description" cols="30"></textarea>
+                    </div>
+
+                    <button type="submit">Add Transaction</button>
+                </form>
+            </div>
+
+            <div class="transactionHistory">
+                <table class="transactionTable">
+                    <tr>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>EDIT</th>
+                        <th>DELETE</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="editPopup" class="editPopup">
+            <form id="editForm">
+                <h2>Edit Transaction</h2>
+                <input type="hidden" id="editId">
+
+                <div class="formLabel">
+                    <label for="editAmount">Amount</label>
+                    <input type="number" step="any" id="editAmount" required>
+                </div>
+                
+                <div class="formLabel">
+                    <label for="editCategory">Category</label>
+                    <select id="editCategory" name="category" required>
+                        <option value="">Select category</option>
+                        <option value="grocery">Grocery</option>
+                        <option value="bill">Bill Payment</option>
+                        <option value="loan">Loan Payment</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="formLabel">
+                    <label for="editDate">Date</label>
+                    <input type="date" id="editDate" name="date" required>
+                </div>
+                
+                <div class="formLabel">
+                    <label for="editDescription">Description</label>
+                    <textarea id="editDescription"></textarea>
+                </div>
+                
+                <button type="submit">Update Transaction</button>
+                <button type="button" id="closeBox">Cancel</button>
+            </form>
+        </div>
+        <script src="../JS/transaction.js"></script>
+        <script src="../JS/header.js"></script>
+    </body>
+</html>

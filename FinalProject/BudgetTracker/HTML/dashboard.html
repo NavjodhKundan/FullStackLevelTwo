@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport">
+        <title>Financies</title>
+        <link rel="stylesheet" href="../CSS/style.css">
+    </head>
+    <body>
+        
+        <header class="userHeader">
+            <div class="userProfile">
+                <img src="../images/duckImage.jpg">
+                <h2 class="UserName"></h2>
+            </div>
+
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="transaction.html">Transactions</a></li>
+                <li><a href="financies.html">Financial Report</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+        </header>
+
+        <div class="body">
+            <div class="welcomeCard">
+                <h2>Hello <span class="name"></span>!</h2>
+                <p>Welcome to Budget Tracking Application.</p>
+                <p>We have your inforamtion stored.</p>
+                <p>You can check your stats under Financial Report tab and 
+                    can also add your transactons to calculate your monthly financies.</p>
+                <p>Thank you for using Budget Traking Application.</p>
+            </div>
+
+            <div class="smartTip">
+                <h2>Financial Advice</h2>
+                <p id="tipText">loading...</p>
+            </div>
+
+            <div class="goalProgress">
+                <canvas id="goalProgress"></canvas>
+                <p>You are only <span id="balance"></span> away from your goal.</p>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="../JS/header.js"></script>
+        <script src="../JS/dashboard.js"></script>
+    </body>
+</html>

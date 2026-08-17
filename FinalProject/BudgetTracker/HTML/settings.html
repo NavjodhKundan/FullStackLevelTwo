@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport">
+        <title>Settings</title>
+        <link rel="stylesheet" href="../CSS/style.css">
+    </head>
+    <body>
+        
+        <header class="userHeader">
+            <div class="userProfile">
+                <img src="../images/duckImage.jpg">
+                <h2 class="UserName"></h2>
+            </div>
+
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="transaction.html">Transactions</a></li>
+                <li><a href="financies.html">Financial Report</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+        </header>
+
+        <div class="body">
+            <div class="updateProfile">
+                <form id="updateProfile">
+                    <h2>Update Profile</h2>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                    <br>
+                    <label for="income">Monthly Income</label>
+                    <input type="number" step="any" id="income" name="income" required>
+                    <br>
+                    <label for="budget">Monthly Budget</label>
+                    <input type="number" step="any" id="budget" name="budget" required>
+                    <br>
+                    <label for="goal">Financial Goal</label>
+                    <input type="number" step="any" id="goal" name="goal" required>
+                    <br>
+                    <label for="savings">Savings</label>
+                    <input type="number" step="any" id="savings" name="savings" required>
+                    <br>
+                    <button type="submit">Update Profile</button>
+                </form>
+            </div>
+
+            <div class="darkMode">
+                <h3>Dark Mode</h3>
+                <button id="darkMode">Dark Mode ON</button>
+            </div>
+
+            <div class="contactForm">
+                <form id="contactForm">
+                    <h2>Contact Form</h2>
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                    <br>
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                    <br>
+                    <label for="userEmail">Email Address</label>
+                    <input type="email" id="userEmail" name="userEmail" required>
+                    <br>
+                    <label for="message" class="messageLabel">Message</label>
+                    <textarea id="message" name="message" cols="50" rows="5" required></textarea>
+                    <br>
+                    <button id="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+
+        <script src="../JS/header.js"></script>
+        <script src="../JS/settings.js"></script>
+    </body>
+</html>
